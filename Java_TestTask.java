@@ -8,14 +8,24 @@ public class Java_TestTask {
             try(FileReader reader = new FileReader(s)){
                 // посимвольное читаем и выводим в консоль
                 int symbol; 
+                String textFile = "";
                 while((symbol = reader.read()) != -1){
-                    System.out.print((char)symbol);
+                    //System.out.print((char)symbol);
+                    textFile += (char)symbol;
+                }
+                
+                // Разделение на строки
+                String[] linesOfTextFile = textFile.split("\\n");
+
+                for(String line : linesOfTextFile){
+                    System.out.println(line);
                 }
             }
             catch(IOException ex){
                 System.out.println(ex.getMessage());
             }
-            //System.out.println(s);
+
+
         }
     }
 }
