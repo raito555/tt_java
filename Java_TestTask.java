@@ -16,7 +16,17 @@ public class Java_TestTask {
 
                 while (scanner.hasNext()) {
                     String line = scanner.nextLine();
-                    typeChecker.checkType(line);
+                    switch (typeChecker.checkType(line)) {
+                        case ("float"):
+                            System.out.println("float");
+                            break;
+                        case ("integer"):
+                            System.out.println("integer");
+                            break;
+                        case ("string"):
+                            System.out.println("string");
+                            break;
+                    }
                 }  
 
                 scanner.close();

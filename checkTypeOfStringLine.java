@@ -5,17 +5,17 @@ public class checkTypeOfStringLine {
                 try {
                     if(line.toLowerCase().contains("e") || line.toLowerCase().contains(".")){
                         Float.parseFloat(line);
-                        System.out.println("float");
-                        return "Float";
+                        //System.out.println("float");
+                        return "float";
                     }else{
                         Integer.parseInt(line);
-                        System.out.println("integer");
-                        return "Integer";
+                        //System.out.println("integer");
+                        return "integer";
                     }
                 } catch (Exception e) {
-                    System.out.println("string");
+                    //System.out.println("string");
                     //System.out.println("ошибка");
-                    return "String"; 
+                    return "string"; 
                 }
         }
 }
