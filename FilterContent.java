@@ -2,9 +2,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Scanner;
 
-public class filterFileContent {
+public class FilterContent {
     void filter(String[] fileNames){
-        checkTypeOfStringLine typeChecker = new checkTypeOfStringLine();
+        Filter typeChecker = new Filter();
         for (String s: fileNames){
             try(FileReader reader = new FileReader(s)){
                 

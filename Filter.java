@@ -1,6 +1,6 @@
 //import javax.naming.spi.DirObjectFactory;
 
-public class checkTypeOfStringLine {
+public class Filter {
         public String checkType(String line){
                 try {
                     if(line.toLowerCase().contains("e") || line.toLowerCase().contains(".")){
@@ -13,7 +13,7 @@ public class checkTypeOfStringLine {
                         return "integer";
                     }
                 } catch (Exception e) {
-                    //System.out.println("string");
+                    //System.out.println(line);
                     //System.out.println("ошибка");
                     return "string"; 
                 }
