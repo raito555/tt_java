@@ -5,6 +5,8 @@ import java.util.Scanner;
 public class Java_TestTask {
 
     public static void main(String[] args) {
+        
+        checkTypeOfStringLine typeChecker = new checkTypeOfStringLine();
 
         for (String s: args){
 
@@ -12,16 +14,14 @@ public class Java_TestTask {
                 
                 Scanner scanner = new Scanner(reader);
 
-                if (scanner.hasNextInt()){
+                while (scanner.hasNext()) {
                     String line = scanner.nextLine();
-                    System.out.println("Integer - " + line);
-                } else {
-                    System.out.println("Не интеджер");
-                }
+                    typeChecker.checkType(line);
+                }  
 
                 scanner.close();
             }
-            
+
             catch(IOException ex){
                 System.out.println(ex.getMessage());
             }
