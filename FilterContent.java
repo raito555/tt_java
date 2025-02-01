@@ -6,7 +6,7 @@ public class FilterContent {
 
     void filter(String[] fileNames){
         Filter filter = new Filter();
-        filter.filter();
+        filter.createFiles();
         for (String s: fileNames){
 
             try(FileReader reader = new FileReader(s)){

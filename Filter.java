@@ -22,13 +22,23 @@ public class Filter {
         public void filter(){
             //String currentPath = new File(".").
             //File directory = new File(".");
+
+        }
+
+        public void createFiles(){
             File floatTextFile = new File(".", "floats.txt");
             File integerTextFile = new File(".", "integers.txt");
             File stringTextFile = new File(".", "strings.txt");
             try {
-                floatTextFile.createNewFile();
-                integerTextFile.createNewFile();
-                stringTextFile.createNewFile();
+                if (!floatTextFile.exists()){
+                    floatTextFile.createNewFile();
+                } 
+                if (!integerTextFile.exists()){
+                    integerTextFile.createNewFile();
+                }
+                if (!stringTextFile.exists()){
+                    stringTextFile.createNewFile();
+                }
             } catch (Exception e) {
                 System.out.println(e);
             }
