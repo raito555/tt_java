@@ -1,5 +1,8 @@
+45
 Lorem ipsum dolor sit amet
 45
+45
+567
 Пример
 3.1415
 consectetur adipiscing
