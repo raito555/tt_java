@@ -1,4 +1,5 @@
 //import javax.naming.spi.DirObjectFactory;
+import java.io.File;
 
 public class Filter {
         public String checkType(String line){
@@ -17,5 +18,19 @@ public class Filter {
                     //System.out.println("ошибка");
                     return "string"; 
                 }
+        }
+        public void filter(){
+            //String currentPath = new File(".").
+            //File directory = new File(".");
+            File floatTextFile = new File(".", "floats.txt");
+            File integerTextFile = new File(".", "integers.txt");
+            File stringTextFile = new File(".", "strings.txt");
+            try {
+                floatTextFile.createNewFile();
+                integerTextFile.createNewFile();
+                stringTextFile.createNewFile();
+            } catch (Exception e) {
+                System.out.println(e);
+            }
         }
 }

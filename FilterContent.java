@@ -3,15 +3,19 @@ import java.io.IOException;
 import java.util.Scanner;
 
 public class FilterContent {
+
     void filter(String[] fileNames){
-        Filter typeChecker = new Filter();
+        Filter filter = new Filter();
+        filter.filter();
         for (String s: fileNames){
+
             try(FileReader reader = new FileReader(s)){
-                
                 Scanner scanner = new Scanner(reader);
+
                 while (scanner.hasNext()) {
                     String line = scanner.nextLine();
-                    switch (typeChecker.checkType(line)) {
+
+                    switch (filter.checkType(line)) {
                         case ("float"):
                             System.out.println("float");
                             break;
