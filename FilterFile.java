@@ -21,9 +21,8 @@ public class FilterFile {
     }
 
     public void appendLine(String line){
-        String lineSeparator = System.lineSeparator();
-        if (fileContent != null && !fileContent.isEmpty()){
-            fileContent = fileContent + lineSeparator + line;
+        if (fileContent != null){
+            fileContent = fileContent + System.lineSeparator() + line;
         } else {
             fileContent = line;
         }
@@ -42,9 +41,9 @@ public class FilterFile {
             try (FileWriter writer = new FileWriter(textFile, append)){
                 fileRewrite = false;
                 writer.write(fileContent);
+                fileContent = "";
                 writer.flush();
             } catch (Exception e) {
-                System.out.println("Ошибка в методе createFile в классе" + fileType);
                 System.out.println(e);
             }
         } else {
