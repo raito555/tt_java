@@ -6,7 +6,7 @@ public class FilterContent {
 
     void filter(String[] fileNames){
         Filter filter = new Filter();
-        filter.createFiles();
+        
         for (String s: fileNames){
 
             try(FileReader reader = new FileReader(s)){
@@ -14,18 +14,9 @@ public class FilterContent {
 
                 while (scanner.hasNext()) {
                     String line = scanner.nextLine();
-
-                    switch (filter.checkType(line)) {
-                        case ("float"):
-                            System.out.println("float");
-                            break;
-                        case ("integer"):
-                            System.out.println("integer");
-                            break;
-                        case ("string"):
-                            System.out.println("string");
-                            break;
-                    }
+                    // вызываем метод создания файла, в нее передаем результат метода checkType, 
+                    // например если в файле не встретится integer, то файл не будет создаваться
+                    filter.createFiles(filter.checkType(line), true);
                 }  
                 scanner.close();
             }

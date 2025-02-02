@@ -1,7 +1,12 @@
 //import javax.naming.spi.DirObjectFactory;
 import java.io.File;
+//import java.lang.classfile.instruction.SwitchCase;
 
 public class Filter {
+    File floatTextFile = new File(".", "floats.txt");
+    File integerTextFile = new File(".", "integers.txt");
+    File stringTextFile = new File(".", "strings.txt");
+    
         public String checkType(String line){
                 try {
                     if(line.toLowerCase().contains("e") || line.toLowerCase().contains(".")){
@@ -20,24 +25,47 @@ public class Filter {
                 }
         }
         public void filter(){
-            //String currentPath = new File(".").
-            //File directory = new File(".");
 
         }
 
-        public void createFiles(){
-            File floatTextFile = new File(".", "floats.txt");
-            File integerTextFile = new File(".", "integers.txt");
-            File stringTextFile = new File(".", "strings.txt");
+        // ДОБАВИТЬ ПАРАМЕТР УКАЗЫВАЮЩИЙ КАКОЙ ФАЙЛ СОЗДАТЬ!!!!!
+        public void createFiles(String type, boolean rewrite){
             try {
-                if (!floatTextFile.exists()){
-                    floatTextFile.createNewFile();
-                } 
-                if (!integerTextFile.exists()){
-                    integerTextFile.createNewFile();
-                }
-                if (!stringTextFile.exists()){
-                    stringTextFile.createNewFile();
+                switch (type) {
+                    case ("float"):
+                        System.out.println("float");
+                        if (!floatTextFile.exists()){
+                            floatTextFile.createNewFile();
+                        } else if (rewrite){
+                            floatTextFile.createNewFile();
+                            System.out.println("rewrited");
+                        }
+                        break;
+                    case ("integer"):
+                        System.out.println("integer");
+                        if (!integerTextFile.exists()){
+                            integerTextFile.createNewFile();
+                        } else if (rewrite){
+                            integerTextFile.createNewFile();
+                            System.out.println("rewrited");
+                        }
+                        break;
+                    case ("string"):
+                        System.out.println("string");
+                        if (!stringTextFile.exists()){
+                            stringTextFile.createNewFile();
+                        } else if (rewrite){
+                            stringTextFile.createNewFile();
+                            System.out.println("rewrited");
+                        }
+                        break;
+                    case ("createNewAll"):
+                    {
+                        stringTextFile.createNewFile();
+                        integerTextFile.createNewFile();
+                        floatTextFile.createNewFile();
+                        break;
+                    }
                 }
             } catch (Exception e) {
                 System.out.println(e);
