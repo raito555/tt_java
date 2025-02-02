@@ -38,7 +38,12 @@ public class FilterContent {
                     }
                 }
                 scanner.close();
-                System.out.println(filterFloats.fileContent);
+
+                filterIntegers.createFile();
+                filterFloats.createFile();
+                filterStrings.createFile();
+
+                //System.out.println(filterFloats.fileContent);
             }
             catch(IOException ex){
                 System.out.println(ex.getMessage());

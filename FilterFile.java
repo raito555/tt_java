@@ -30,22 +30,21 @@ public class FilterFile {
     }
 
     public void createFile(){
-        // переместить объявление append в параметры метода когда понадобится
-        boolean append;
-        if (fileRewrite){
-            append = false;
-        } else {
-            append = true;
-        }
+        if (fileContent == null || fileContent.isEmpty())
+            return;
+        
+        boolean append = !fileRewrite;
+
         if (fileType != null && !fileType.isEmpty()){
             fileName = fileNamePrefix + fileType + "s.txt";
             File textFile = new File(filePath, fileName);
 
             try (FileWriter writer = new FileWriter(textFile, append)){
                 fileRewrite = false;
-
+                writer.write(fileContent);
                 writer.flush();
             } catch (Exception e) {
+                System.out.println("Ошибка в методе createFile в классе" + fileType);
                 System.out.println(e);
             }
         } else {
