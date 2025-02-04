@@ -2,24 +2,29 @@ import java.io.File;
 import java.io.FileWriter;
 
 public class FilterFile {
-    String filePath = ".";
+    String fileParentCatalog;
     String fileType;
     String fileNamePrefix = "";
-    boolean fileRewrite = true;
-
+    //boolean fileRewrite = true;
     String fileContent;
-
     String fileName;
 
     public FilterFile(){}
 
-    public FilterFile(String path, String type, String prefix, boolean rewrite){
-        filePath = path;
+    public FilterFile(String path, String type, String fileNamePrefix){
+        fileParentCatalog = path;
         fileType = type;
-        fileNamePrefix = prefix;
-        fileRewrite = rewrite;
+        //fileRewrite = rewrite;
+        fileName = fileNamePrefix + fileType + "s.txt";
     }
 
+    public FilterFile(String path, String type){
+        fileParentCatalog = path;
+        fileType = type;
+        fileName = fileType + "s.txt";
+    }
+
+    /*
     public void appendLine(String line){
         if (fileContent != null){
             fileContent = fileContent + System.lineSeparator() + line;
@@ -27,22 +32,19 @@ public class FilterFile {
             fileContent = line;
         }
     }
-
-    public void createFile(){
+    */
+    public void createFile(boolean fileRewrite){
         if (fileContent == null || fileContent.isEmpty())
             return;
-        
+
         boolean append = !fileRewrite;
 
         if (fileType != null && !fileType.isEmpty()){
-            fileName = fileNamePrefix + fileType + "s.txt";
-            File textFile = new File(filePath, fileName);
-
+            File textFile = new File(fileParentCatalog, fileName);
             try (FileWriter writer = new FileWriter(textFile, append)){
-                fileRewrite = false;
                 writer.write(fileContent);
-                fileContent = "";
                 writer.flush();
+                //fileContent = null;
             } catch (Exception e) {
                 System.out.println(e);
             }

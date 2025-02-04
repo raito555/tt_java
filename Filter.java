@@ -1,3 +1,6 @@
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.Scanner;
 
 public class Filter {
 
@@ -14,9 +17,52 @@ public class Filter {
                     return "string"; 
                 }
         }
-        public void filter(){
 
+   
+        
+        public String appendLine(String lines, String line){
+            if (lines != null){
+                lines = lines + System.lineSeparator() + line;
+            } else {
+                lines = line;
+            }
+            return lines;
         }
+
+        public String readResultFile(String fileName, String lines){
+            try(FileReader reader = new FileReader(fileName)){
+                Scanner scanner = new Scanner(reader);
+                while (scanner.hasNext()) {
+                    String line = scanner.nextLine();
+                    lines = appendLine(lines, line);
+                }
+                scanner.close();
+            }
+            catch(IOException ex){
+                System.out.println(ex.getMessage());
+            }
+            return lines;
+        } 
+
+        public String readInputFile(String fileType, String lines, String inputFile){
+
+            try(FileReader reader = new FileReader(inputFile)){
+                Scanner scanner = new Scanner(reader);
+                while (scanner.hasNext()) {
+                    String line = scanner.nextLine();
+                    if(checkType(line) == fileType){
+                        lines = appendLine(lines, line);
+                    }
+                }
+                scanner.close();
+            }
+            catch(IOException ex){
+                System.out.println(ex.getMessage());
+            }
+            return lines;
+        }
+
+        
         /*
         // ДОБАВИТЬ ПАРАМЕТР УКАЗЫВАЮЩИЙ КАКОЙ ФАЙЛ СОЗДАТЬ!!!!!
         public void createFiles(String type, boolean rewrite){
