@@ -2,49 +2,44 @@ import java.io.File;
 import java.io.FileWriter;
 
 public class FilterFile {
-    String fileParentCatalog;
+    String fileParentPath;
     String fileType;
     String fileNamePrefix = "";
-    //boolean fileRewrite = true;
     String fileContent;
     String fileName;
+    String filePath;
 
     public FilterFile(){}
 
-    public FilterFile(String path, String type, String fileNamePrefix){
-        fileParentCatalog = path;
+    public FilterFile(String parentPath, String type, String fileNamePrefix){
+        fileParentPath = parentPath;
         fileType = type;
-        //fileRewrite = rewrite;
         fileName = fileNamePrefix + fileType + "s.txt";
+        filePath = fileParentPath + fileName;
     }
 
-    public FilterFile(String path, String type){
-        fileParentCatalog = path;
+    public FilterFile(String parentPath, String type){
+        fileParentPath = parentPath;
         fileType = type;
         fileName = fileType + "s.txt";
+        filePath = fileParentPath + fileName;
     }
 
-    /*
-    public void appendLine(String line){
-        if (fileContent != null){
-            fileContent = fileContent + System.lineSeparator() + line;
-        } else {
-            fileContent = line;
-        }
-    }
-    */
-    public void createFile(boolean fileRewrite){
+    public void writeFile(boolean fileRewrite, boolean isNewFile){
         if (fileContent == null || fileContent.isEmpty())
             return;
+
+        if (!isNewFile && !fileRewrite){
+            fileContent = System.lineSeparator() + fileContent;
+        }
 
         boolean append = !fileRewrite;
 
         if (fileType != null && !fileType.isEmpty()){
-            File textFile = new File(fileParentCatalog, fileName);
+            File textFile = new File(fileParentPath, fileName);
             try (FileWriter writer = new FileWriter(textFile, append)){
                 writer.write(fileContent);
                 writer.flush();
-                //fileContent = null;
             } catch (Exception e) {
                 System.out.println(e);
             }

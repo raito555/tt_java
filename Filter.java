@@ -29,7 +29,9 @@ public class Filter {
             return lines;
         }
 
+        /*
         public String readResultFile(String fileName, String lines){
+            
             try(FileReader reader = new FileReader(fileName)){
                 Scanner scanner = new Scanner(reader);
                 while (scanner.hasNext()) {
@@ -37,11 +39,34 @@ public class Filter {
                     lines = appendLine(lines, line);
                 }
                 scanner.close();
+                
             }
             catch(IOException ex){
-                System.out.println(ex.getMessage());
+                //System.out.println(ex.getMessage());
+                return null;
             }
             return lines;
+        } 
+        */
+
+        public boolean isEmptyFile(String fileName){
+            boolean isEmpty = true;
+            try(FileReader reader = new FileReader(fileName)){
+                Scanner scanner = new Scanner(reader);
+                while (scanner.hasNext()) {
+                    String line = scanner.nextLine();
+                    if(line != null && !line.isEmpty()){
+                        isEmpty = false;
+                        break;
+                    } 
+                }
+                scanner.close();
+                return isEmpty;
+            }
+            catch(IOException ex){
+                //System.out.println(ex.getMessage());
+                return true;
+            }
         } 
 
         public String readInputFile(String fileType, String lines, String inputFile){
@@ -61,51 +86,4 @@ public class Filter {
             }
             return lines;
         }
-
-        
-        /*
-        // ДОБАВИТЬ ПАРАМЕТР УКАЗЫВАЮЩИЙ КАКОЙ ФАЙЛ СОЗДАТЬ!!!!!
-        public void createFiles(String type, boolean rewrite){
-            try {
-                switch (type) {
-                    case ("float"):
-                        System.out.println("float");
-                        if (!floatTextFile.exists()){
-                            floatTextFile.createNewFile();
-                        } else if (rewrite){
-                            floatTextFile.createNewFile();
-                            System.out.println("rewrited");
-                        }
-                        break;
-                    case ("integer"):
-                        System.out.println("integer");
-                        if (!integerTextFile.exists()){
-                            integerTextFile.createNewFile();
-                        } else if (rewrite){
-                            integerTextFile.createNewFile();
-                            System.out.println("rewrited");
-                        }
-                        break;
-                    case ("string"):
-                        System.out.println("string");
-                        if (!stringTextFile.exists()){
-                            stringTextFile.createNewFile();
-                        } else if (rewrite){
-                            stringTextFile.createNewFile();
-                            System.out.println("rewrited");
-                        }
-                        break;
-                    case ("createNewAll"):
-                    {
-                        stringTextFile.createNewFile();
-                        integerTextFile.createNewFile();
-                        floatTextFile.createNewFile();
-                        break;
-                    }
-                }
-            } catch (Exception e) {
-                System.out.println(e);
-            }
-        }
-            */
 }
