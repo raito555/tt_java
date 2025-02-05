@@ -11,18 +11,19 @@ public class FilterFile {
 
     public FilterFile(){}
 
-    public FilterFile(String parentPath, String type, String fileNamePrefix){
+    public FilterFile(String parentPath, String type, String prefix){
         fileParentPath = parentPath;
         fileType = type;
+        fileNamePrefix = prefix;
         fileName = fileNamePrefix + fileType + "s.txt";
-        filePath = fileParentPath + fileName;
+        filePath = parentPath + fileName;
     }
 
     public FilterFile(String parentPath, String type){
         fileParentPath = parentPath;
         fileType = type;
         fileName = fileType + "s.txt";
-        filePath = fileParentPath + fileName;
+        filePath = parentPath + fileName;
     }
 
     public void writeFile(boolean fileRewrite, boolean isNewFile){

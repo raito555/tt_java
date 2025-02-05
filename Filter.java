@@ -1,6 +1,9 @@
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Filter {
 
@@ -29,25 +32,22 @@ public class Filter {
             return lines;
         }
 
-        /*
-        public String readResultFile(String fileName, String lines){
-            
-            try(FileReader reader = new FileReader(fileName)){
-                Scanner scanner = new Scanner(reader);
-                while (scanner.hasNext()) {
-                    String line = scanner.nextLine();
-                    lines = appendLine(lines, line);
-                }
-                scanner.close();
-                
-            }
-            catch(IOException ex){
-                //System.out.println(ex.getMessage());
-                return null;
-            }
-            return lines;
-        } 
-        */
+        public String addSlashesToPath(String path){
+            Pattern parentPath = Pattern.compile("[a-zA-Z]{1}:.+");
+            Matcher matcherParentPath = parentPath.matcher(path);
+
+            Pattern slashFirst = Pattern.compile("^\\" + File.separator + "(.+)");
+            Matcher matcherSlashFirst = slashFirst.matcher(path);
+
+            Pattern slashEnd = Pattern.compile("(.+)\\" + File.separator);
+            Matcher matcherSlashEnd = slashEnd.matcher(path);
+
+            if (!matcherSlashFirst.find() && !matcherParentPath.find())
+                path = File.separator + path;
+            if (!matcherSlashEnd.find()) 
+                path = path + File.separator;
+            return path;
+        }
 
         public boolean isEmptyFile(String fileName){
             boolean isEmpty = true;

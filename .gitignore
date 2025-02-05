@@ -25,6 +25,5 @@ replay_pid*
 
 # MyGitIgnore
 test.java
-floats.txt
-integers.txt
-strings.txt
+*.txt
+
