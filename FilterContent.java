@@ -7,8 +7,6 @@ public class FilterContent {
     String prefix = "";
 
     void start(String[] args){
-        Filter filter = new Filter();
-
         Pattern patternOption = Pattern.compile("\\-{1}.");
         Pattern patternTextFile = Pattern.compile(".+\\.txt");
 
@@ -22,30 +20,38 @@ public class FilterContent {
                         break;
                     case "-o":
                         parentPath = args[i+1];
+                        i++;
                         break;
                     case "-p":
                         prefix = args[i+1];
+                        i++;
                         break;
                     default:
+                        System.out.println("Неизвестный опция: " + args[i]);
                         break;
                 }
+                continue;
             }
 
             Matcher matcherTextFile = patternTextFile.matcher(args[i]);
             if (matcherTextFile.find()){
-                FilterFile filterFloats = new FilterFile(filter.addSlashesToPath(parentPath), "float", prefix);
-                FilterFile filterStrings = new FilterFile(filter.addSlashesToPath(parentPath), "string", prefix);
-                FilterFile filterIntegers = new FilterFile(filter.addSlashesToPath(parentPath), "integer", prefix);  
-                filterIntegers.fileContent = filter.readInputFile(filterIntegers.fileType, filterIntegers.fileContent, args[i]);
-                filterStrings.fileContent = filter.readInputFile(filterStrings.fileType, filterStrings.fileContent, args[i]);
-                filterFloats.fileContent = filter.readInputFile(filterFloats.fileType, filterFloats.fileContent, args[i]);
+                FilterFile filterFloats = new FilterFile(parentPath, "float", prefix);
+                FilterFile filterStrings = new FilterFile(parentPath, "string", prefix);
+                FilterFile filterIntegers = new FilterFile(parentPath, "integer", prefix);  
+                filterIntegers.readInputFile(args[i]);
+                filterStrings.readInputFile(args[i]);
+                filterFloats.readInputFile(args[i]);
 
-                filterIntegers.writeFile(fileRewrite, filter.isEmptyFile(filterIntegers.filePath));
-                filterStrings.writeFile(fileRewrite, filter.isEmptyFile(filterStrings.filePath));
-                filterFloats.writeFile(fileRewrite, filter.isEmptyFile(filterFloats.filePath));
+                filterIntegers.writeFile(fileRewrite);
+                filterStrings.writeFile(fileRewrite);
+                filterFloats.writeFile(fileRewrite);
                 
                 fileRewrite = false;
+
+                continue;
             }
+
+            System.out.println("Неизвестный параметр: " + args[i]);
         }
     }
 }
