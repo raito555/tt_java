@@ -2,29 +2,54 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class FilterContent {
-    boolean fileRewrite = true;
-    String parentPath = "./";
-    String prefix = "";
+    String fileParentPath = "./";
+    Boolean isFullStat;
 
     void start(String[] args){
         Pattern patternOption = Pattern.compile("\\-{1}.");
         Pattern patternTextFile = Pattern.compile(".+\\.txt");
 
+
+        Statistic statisticInteger = new Statistic("integer");
+        Statistic statisticFloat = new Statistic("float");
+        Statistic statisticString = new Statistic("string");
+
+        Statistic.Integers statIntegers = statisticInteger.new Integers();
+        Statistic.Floats statFloats = statisticFloat.new Floats();
+        Statistic.Strings statStrings = statisticString.new Strings();
+
+        FilterFile filterIntegers = new FilterFile(fileParentPath, "integer");  
+        FilterFile filterFloats = new FilterFile(fileParentPath, "float");
+        FilterFile filterStrings = new FilterFile(fileParentPath, "string");
+        
         for (int i = 0; i < args.length; i++){
             
             Matcher matcherOptionPath = patternOption.matcher(args[i]);
+
             if (matcherOptionPath.find()){
                 switch (args[i]) {
                     case "-a":
-                        fileRewrite = false;
+                        filterIntegers.fileRewrite = false;
+                        filterFloats.fileRewrite = false;
+                        filterStrings.fileRewrite = false;
                         break;
                     case "-o":
-                        parentPath = args[i+1];
+                        filterIntegers.fileParentPath = FilterFile.addSlashesToPath(args[i+1]);
+                        filterFloats.fileParentPath = FilterFile.addSlashesToPath(args[i+1]);
+                        filterStrings.fileParentPath = FilterFile.addSlashesToPath(args[i+1]);
                         i++;
                         break;
                     case "-p":
-                        prefix = args[i+1];
+                        filterIntegers.fileNamePrefix = args[i+1];
+                        filterFloats.fileNamePrefix = args[i+1];
+                        filterStrings.fileNamePrefix = args[i+1];
                         i++;
+                        break;
+                    case "-s":
+                        isFullStat = false;
+                        break;
+                    case "-f":
+                        isFullStat = true;
                         break;
                     default:
                         System.out.println("Неизвестный опция: " + args[i]);
@@ -34,24 +59,27 @@ public class FilterContent {
             }
 
             Matcher matcherTextFile = patternTextFile.matcher(args[i]);
+
             if (matcherTextFile.find()){
-                FilterFile filterFloats = new FilterFile(parentPath, "float", prefix);
-                FilterFile filterStrings = new FilterFile(parentPath, "string", prefix);
-                FilterFile filterIntegers = new FilterFile(parentPath, "integer", prefix);  
                 filterIntegers.readInputFile(args[i]);
                 filterStrings.readInputFile(args[i]);
                 filterFloats.readInputFile(args[i]);
-
-                filterIntegers.writeFile(fileRewrite);
-                filterStrings.writeFile(fileRewrite);
-                filterFloats.writeFile(fileRewrite);
-                
-                fileRewrite = false;
-
                 continue;
             }
-
             System.out.println("Неизвестный параметр: " + args[i]);
+        }
+
+        filterIntegers.writeFile();
+        filterStrings.writeFile();
+        filterFloats.writeFile();
+
+        if (isFullStat != null){
+            statisticInteger.addContent(filterIntegers.fileContent);
+            statisticString.addContent(filterStrings.fileContent);
+            statisticFloat.addContent(filterFloats.fileContent);
+            statIntegers.printStat(isFullStat);
+            statFloats.printStat(isFullStat);
+            statStrings.printStat(isFullStat);
         }
     }
 }

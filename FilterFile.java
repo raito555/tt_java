@@ -13,59 +13,42 @@ public class FilterFile {
     String fileContent;
     String fileName;
     String filePath;
+    boolean isFullStat = false;
+    boolean fileRewrite = true;
 
-    public FilterFile(){}
-
-    public FilterFile(String parentPath, String type, String prefix){
-        fileParentPath = addSlashesToPath(parentPath);
-        fileType = type;
-        fileNamePrefix = prefix;
-        fileName = fileNamePrefix + fileType + "s.txt";
-        filePath = fileParentPath + fileName;
+    public FilterFile(String fileParentPath, String fileType){
+        this.fileParentPath = addSlashesToPath(fileParentPath);
+        this.fileType = fileType;
     }
 
-    public FilterFile(String parentPath, String type){
-        fileParentPath = addSlashesToPath(parentPath);
-        fileType = type;
-        fileName = fileType + "s.txt";
-        filePath = fileParentPath + fileName;
-    }
-
-    public void writeFile(boolean fileRewrite){
-        if (fileContent == null || fileContent.isEmpty())
-            return;
-
-        if (!isEmptyFile(filePath) && !fileRewrite){
-            fileContent = System.lineSeparator() + fileContent;
-        }
-
-        boolean append = !fileRewrite;
-
-        if (fileType != null && !fileType.isEmpty()){
-            File textFile = new File(fileParentPath, fileName);
-            try (FileWriter writer = new FileWriter(textFile, append)){
-                writer.write(fileContent);
-                writer.flush();
-            } catch (Exception e) {
-                System.out.println(e);
+    public static String checkType(String line){
+        try {
+            if(line.toLowerCase().contains("e") || line.toLowerCase().contains(".")){
+                Float.parseFloat(line);
+                return "float";
+            }else{
+                Integer.parseInt(line);
+                return "integer";
             }
-        } else {
-            System.out.println("Не указан тип данных");
+        } catch (Exception e) {
+            return "string"; 
         }
     }
 
-    public boolean isEmptyFile(String path){
+    public static boolean isEmptyFile(String path){
         boolean isEmpty = true;
+
         try(FileReader reader = new FileReader(path)){
-            Scanner scanner = new Scanner(reader);
-            while (scanner.hasNext()) {
-                String line = scanner.nextLine();
+            Scanner scannerOutFile = new Scanner(reader);
+
+            while (scannerOutFile.hasNext()) {
+                String line = scannerOutFile.nextLine();
                 if(line != null && !line.isEmpty()){
                     isEmpty = false;
                     break;
                 } 
             }
-            scanner.close();
+            scannerOutFile.close();
             return isEmpty;
         }
         catch(IOException ex){
@@ -73,7 +56,15 @@ public class FilterFile {
         }
     }
 
-    public String addSlashesToPath(String path){
+    public static String addSlashesToPath(String path){
+        
+        Pattern patternSlash = Pattern.compile("(.*)"+ "/" + "(.*)");
+        Matcher matcherSlash = patternSlash.matcher(path);
+
+        if (matcherSlash.find()){
+            path = path.replace("/", File.separator);
+        }
+
         Pattern parentPath = Pattern.compile("[a-zA-Z]{1}:.+");
         Matcher matcherParentPath = parentPath.matcher(path);
 
@@ -85,17 +76,49 @@ public class FilterFile {
 
         if (!matcherSlashFirst.find() && !matcherParentPath.find())
             path = File.separator + path;
-        if (!matcherSlashEnd.find()) 
+
+        if (!matcherSlashEnd.find()){
             path = path + File.separator;
+        }
+
         return path;
     }
 
-    public void readInputFile(String inputFile){
+    public void writeFile(){
+        boolean append = !fileRewrite;
+        fileName = fileNamePrefix + fileType + "s.txt";
+        filePath = fileParentPath + addSlashesToPath(fileName);
 
+        if (fileContent == null || fileContent.isEmpty())
+            return;
+
+        if (fileType != null && !fileType.isEmpty()){
+            File textFile = new File(fileParentPath, fileName);
+            try (FileWriter writer = new FileWriter(textFile, append)){
+
+                if (fileRewrite == false && isEmptyFile(filePath) == false){
+                    writer.write(System.lineSeparator() + fileContent);
+                } else {
+                    writer.write(fileContent);
+                }
+                
+                writer.flush();
+                fileRewrite = false;
+            } catch (Exception e) {
+                System.out.println("Неудается найти указанный путь для сохранения файла: " + textFile);
+            }
+        } else {
+            System.out.println("Не указан тип данных");
+        }
+    }
+
+    public void readInputFile(String inputFile){
         try(FileReader reader = new FileReader(inputFile)){
-            Scanner scanner = new Scanner(reader);
-            while (scanner.hasNext()) {
-                String line = scanner.nextLine();
+            Scanner scannerInFile = new Scanner(reader);
+
+            while (scannerInFile.hasNext()) {
+                String line = scannerInFile.nextLine();
+
                 if(checkType(line) == fileType){
                     if (fileContent != null){
                         fileContent = fileContent + System.lineSeparator() + line;
@@ -104,24 +127,10 @@ public class FilterFile {
                     }
                 }
             }
-            scanner.close();
+            scannerInFile.close();
         }
         catch(IOException ex){
             System.out.println(ex.getMessage());
-        }
-    }
-
-    public String checkType(String line){
-        try {
-            if(line.toLowerCase().contains("e") || line.toLowerCase().contains(".")){
-                Float.parseFloat(line);
-                return "float";
-            }else{
-                Integer.parseInt(line);
-                return "integer";
-            }
-        } catch (Exception e) {
-            return "string"; 
         }
     }
 }
